@@ -3,15 +3,9 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: 1.75rem;
-}
-
-.topbar-left {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .menu-button {
@@ -38,9 +32,6 @@
 }
 
 .topbar-right {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   gap: 1.25rem;
 }
 
@@ -55,7 +46,6 @@
   background-color: #e5e7eb;
   border-radius: 9999px;
 }
-
 .admin-name {
-  font-weight: 600;
+  font-weight: 500;
 }
