@@ -31,7 +31,10 @@ const SidebarLink = ({
   isCollapsed,
 }: SidebarLinkProps) => {
   const pathname = usePathname()
-  const isActive = pathname === href || (pathname === '/' && href === '/list')
+  const isActive =
+    pathname === href ||
+    (pathname === '/' && href === '/list') ||
+    (pathname === '/' && href === '/create-post')
 
   return (
     <Link href={href} className='sidebar-link'>
@@ -71,13 +74,13 @@ const Sidebar = ({
 
       <div className='sidebar-links'>
         <SidebarLink
-          href='/list'
+          href={`/admin/list`}
           icon={ClipboardList}
           label='Posts'
           isCollapsed={isCollapsed}
         />
         <SidebarLink
-          href='/create-post'
+          href={`/admin/create-post`}
           icon={SlidersHorizontal}
           label='Create Post'
           isCollapsed={isCollapsed}

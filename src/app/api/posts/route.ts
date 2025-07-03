@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import connectDB from '@/lib/dbConnect'
 import Post from '@/models/Post'
 

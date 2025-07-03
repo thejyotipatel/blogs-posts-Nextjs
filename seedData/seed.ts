@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import Post from '@/models/Post'
-import posts from '@/lib/seedData/data.json'
+import posts from '@/seedData/data.json'
 import dotenv from 'dotenv'
 
 dotenv.config()
