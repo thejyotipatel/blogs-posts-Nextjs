@@ -88,10 +88,10 @@ hr {
 
 @media (min-width: 768px) {
   .sidebar-collapsed .main-content {
-    padding-left: 6rem;
+    padding-left: 4rem;
   }
 
   .sidebar-expanded .main-content {
-    padding-left: 12rem;
+    padding-left: 11rem;
   }
 }

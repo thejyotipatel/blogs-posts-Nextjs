@@ -32,9 +32,7 @@ const SidebarLink = ({
 }: SidebarLinkProps) => {
   const pathname = usePathname()
   const isActive =
-    pathname === href ||
-    (pathname === '/' && href === '/list') ||
-    (pathname === '/' && href === '/create-post')
+    pathname === href || (pathname === '/' && href === '/create-post')
 
   return (
     <Link href={href} className='sidebar-link'>
