@@ -1,5 +1,5 @@
-import Post from '@/app/post/page'
+import PostList from './admin/page'
 
 export default function Home() {
-  return <Post />
+  return <PostList />
 }

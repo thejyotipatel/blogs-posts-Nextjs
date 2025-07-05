@@ -18,20 +18,40 @@ const Navbar = ({
     setIsCollapsed(!isCollapsed)
     console.log(`Sidebar is now ${isCollapsed ? 'expanded' : 'collapsed'}`)
   }
+  const handleAdminClick = () => {
+    if (!admin) {
+      return (admin = true)
+    }
+    return (admin = false)
+  }
+
   return (
-    <div className={' topbar'}>
+    <div className={'topbar'}>
       {/* LEFT SIDE */}
-      <button className='menu-button' onClick={toggleSidebar}>
-        <Menu className='icon-style' size={24} />
-      </button>
+      {/* {admin ? (
+        <button className='menu-button' onClick={toggleSidebar}>
+          <Menu className='icon-style' size={24} />
+        </button>
+      ) : ( */}
+      <h2 className='logo'>My Blog</h2>
+      {/* )} */}
       {/* RIGHT SIDE */}
       <div className='topbar-right'>
-        <Link href='./create-post' className='admin-info'>
-          <User className='icon-style admin-avatar' size={24} />
-          <span className='admin-name'>
-            Login as {admin ? 'admin' : 'user'}
-          </span>
-        </Link>
+        {!admin ? (
+          <Link
+            href='./admin/list'
+            className='admin-info'
+            onClick={handleAdminClick}
+          >
+            <User className='icon-style admin-avatar' size={24} />
+            <span className='admin-name'>Login as admin</span>
+          </Link>
+        ) : (
+          <Link href='./post' className='admin-info' onClick={handleAdminClick}>
+            <User className='icon-style admin-avatar' size={24} />
+            <span className='admin-name'>Login as user</span>
+          </Link>
+        )}
       </div>
     </div>
   )
