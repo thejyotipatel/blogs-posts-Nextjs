@@ -41,7 +41,7 @@ const PostList = () => {
       // console.log('Posts fetched successfully:', postsData)
     })
   }
-
+  const handleSubmit = async () => {}
   useEffect(() => {
     getData()
   }, [])
@@ -57,12 +57,13 @@ const PostList = () => {
       {/* HEADER BAR   */}
       <div className='header-bar'>
         <Header name='Posts' />
-        <button
+        <Link
+          href='/admin/create-post'
           className='create-btn'
           // onClick={() => setIsModelOpen(true)}
         >
           <PlusCircleIcon className='plus-icon' /> Create Post
-        </button>
+        </Link>
       </div>
       {/* BODY OF LIST of POSTS */}
       <div className='grid-layout'>

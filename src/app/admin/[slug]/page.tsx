@@ -1,26 +1,31 @@
-'use client'
+import connectDB from '@/lib/dbConnect'
+import Post from '@/models/Post'
 import { notFound } from 'next/navigation'
-import { useState } from 'react'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import React from 'react'
 
-const PostDetail = async ({ params }: { params: { slug: string } }) => {
-  const [value, setValue] = useState<string>('')
+type Props = {
+  params: { slug: string }
+}
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${params.slug}`
-  )
+export default function PostPage({ params }: Props) {
+  const { slug } = params
 
-  if (!res.ok) return notFound()
+  const post = React.useMemo(async () => {
+    await connectDB()
+    const post = await Post.findOne({ slug }).lean()
+    return post
+  }, [slug])
 
-  const post = await res.json()
-  setValue(post.content)
+  if (!post) return notFound()
+  console.log('Post not found:', slug)
 
   return (
-    <div className='post-detail'>
-      <h1 className='post-title'>{post.title}</h1>
-      <ReactQuill theme='snow' value={value} onChange={setValue} />
+    <div className='max-w-3xl mx-auto px-6 py-10'>
+      {post.title}
+      <div
+        className='prose max-w-none'
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </div>
   )
 }
-export default PostDetail
