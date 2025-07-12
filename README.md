@@ -34,3 +34,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+<!--
+MERGE AND CONTRIBUTE
+3 git clone https://github.com/thejyotipatel/start-here-guidelines...
+4 cd start-here-guidelines
+5 ls
+6 git remote add upstream Before you make any changes, keep your f...
+7 git remote add upstream https://github.com/zero-to-mastery/start...
+8 git pull upstream master https://github.com/thejyotipatel/start-...
+9 git pull upstream master https://github.com/thejyotipatel/start-...
+10 git remote -v
+11 git pull upstream master
+12 git checkout master
+13 git pull upstream master
+14 git add CONTRIBUTORS.md
+15 git commit -m "Add thejyotipatel"
+16 git push origin master -->

@@ -15,8 +15,8 @@ import { useRouter } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import Navbar from '@/app/(components)/Navbar'
 
-export const admin = true
 const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
+  const [isAdmin, setIsAdmin] = useState(false)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [posts, setPosts] = useState<any[]>([])
   const router = useRouter()
@@ -30,17 +30,20 @@ const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
   }
   useEffect(() => {
     getData()
-    if (!admin) {
-      router.push('/posts')
+    if (isAdmin) {
+      return router.push('/admin')
+    } else {
+      return router.push('/post')
     }
-  }, [admin])
+  }, [isAdmin])
   return (
     <div className={'main-wrapper'}>
       <main className={'main-content'}>
         <Navbar
           isCollapsed={isSidebarCollapsed}
           setIsCollapsed={setIsSidebarCollapsed}
-          admin={admin}
+          isAdmin={isAdmin}
+          setIsAdmin={setIsAdmin}
         />
         {children}
       </main>

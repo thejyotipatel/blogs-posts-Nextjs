@@ -10,6 +10,7 @@ import {
   SearchIcon,
 } from 'lucide-react'
 import Link from 'next/link'
+import PostCard from '../(components)/PostCard'
 
 const PostList = () => {
   const [posts, setPosts] = useState<any[]>([])
@@ -37,7 +38,7 @@ const PostList = () => {
         return acc
       }, [])
       setPosts(postsData)
-      console.log('Posts fetched successfully:', postsData)
+      // console.log('Posts fetched successfully:', postsData)
     })
   }
 
@@ -66,27 +67,7 @@ const PostList = () => {
       {/* BODY OF LIST of POSTS */}
       <div className='grid-layout'>
         {posts.map((post) => (
-          <div className='grid-item ' key={post._id}>
-            <div className='item-header'>
-              <h1 className='item-title'>{post.title}</h1>
-              <div className='btns-wrapper'>
-                <button className='edit-btn'>
-                  <Edit />
-                </button>
-                <button className='delete-btn'>
-                  <DeleteIcon />
-                </button>
-              </div>
-            </div>
-            <Link href={`/admin/${post.slug}`} className='item-desc'>
-              <p className='item-date'>{post.slug}</p>
-              <br />
-              {post.content.length > 100
-                ? post.content.substring(0, 100) + '...'
-                : post.content}
-              <br />
-            </Link>
-          </div>
+          <PostCard key={post._id} post={post} />
         ))}
       </div>
     </div>
