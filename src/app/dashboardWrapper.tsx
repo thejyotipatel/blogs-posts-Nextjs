@@ -9,6 +9,7 @@
 // This error happened while generating the page. Any console logs will be displayed in the terminal window
 
 'use client'
+import { isAdmin } from '@/lib/isAdmin'
 
 import { useRouter } from 'next/navigation'
 
@@ -16,10 +17,10 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '@/app/(components)/Navbar'
 
 const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
-  const [posts, setPosts] = useState<any[]>([])
+  const admin = isAdmin()
   const router = useRouter()
+
+  const [posts, setPosts] = useState<any[]>([])
 
   const getData = async () => {
     fetch('/api/posts').then(async (res) => {
@@ -30,21 +31,16 @@ const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
   }
   useEffect(() => {
     getData()
-    if (isAdmin) {
+    if (admin) {
       return router.push('/admin')
     } else {
       return router.push('/post')
     }
-  }, [isAdmin])
+  }, [admin])
   return (
     <div className={'main-wrapper'}>
       <main className={'main-content'}>
-        <Navbar
-          isCollapsed={isSidebarCollapsed}
-          setIsCollapsed={setIsSidebarCollapsed}
-          isAdmin={isAdmin}
-          setIsAdmin={setIsAdmin}
-        />
+        <Navbar />
         {children}
       </main>
     </div>

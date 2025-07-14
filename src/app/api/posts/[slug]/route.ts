@@ -1,21 +1,80 @@
-import { NextResponse } from 'next/server'
 import connectDB from '@/lib/dbConnect'
 import Post from '@/models/Post'
+import { generateSlug } from '@/lib/generateSlug'
 
+// GET BLOG POST BY TITLE/SLUG
 export async function GET(req: Request, context: { params: { slug: string } }) {
-  await connectDB()
+  try {
+    await connectDB()
+    const { slug } = await context.params
 
-  const slug = context.params.slug
+    const post = await Post.findOne({ slug })
 
-  const post = await Post.findOne({ slug })
+    if (!post)
+      return new Response(JSON.stringify({ error: 'Blog post not found' }), {
+        status: 404,
+      })
 
-  if (!post)
-    return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+    return new Response(JSON.stringify(post), { status: 200 })
+  } catch {
+    return new Response(JSON.stringify({ error: 'Failed to fetch post' }), {
+      status: 500,
+    })
+  }
+}
 
-  return NextResponse.json({
-    title: post.title,
-    content: post.content,
-    slug: post.slug,
-    createdAt: post.createdAt,
-  })
+// UPDATE BLOG POST
+export async function PUT(req: Request, context: { params: { slug: string } }) {
+  try {
+    const { title, content } = await req.json()
+    const { slug } = await context.params
+
+    await connectDB()
+
+    const updatedPost = await Post.findOneAndUpdate(
+      { slug },
+      { title, content, slug: generateSlug(title) },
+      { new: true }
+    )
+
+    if (!updatedPost)
+      return new Response(JSON.stringify({ error: 'Blog post not found' }), {
+        status: 404,
+      })
+
+    return new Response(JSON.stringify(updatedPost), { status: 200 })
+  } catch {
+    return new Response(JSON.stringify({ error: 'Failed to update post' }), {
+      status: 500,
+    })
+  }
+}
+
+// DELETE BLOG POST BY SLUG
+export async function DELETE(
+  req: Request,
+  context: { params: { slug: string } }
+) {
+  try {
+    const { slug } = await context.params
+
+    await connectDB()
+    const deletedPost = await Post.findOneAndDelete({ slug })
+
+    if (!deletedPost)
+      return new Response(JSON.stringify({ error: 'Blog post not found' }), {
+        status: 404,
+      })
+
+    return new Response(JSON.stringify({ message: 'Blog post deleted' }), {
+      status: 200,
+    })
+  } catch {
+    return new Response(
+      JSON.stringify({ error: 'Failed to delete blog post' }),
+      {
+        status: 500,
+      }
+    )
+  }
 }

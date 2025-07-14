@@ -18,13 +18,14 @@
 
 .create-post-input {
   width: 100%;
+  max-width: 700px;
   padding: 0.5rem 1rem;
   background-color: #ffffff;
   border: none;
   border-radius: 0.75rem;
   outline: none;
 }
-
+ 
 .ql-container {
   min-height: 260px;
 }

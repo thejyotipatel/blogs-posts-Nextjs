@@ -1,19 +1,14 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import Header from '@/app/(components)/Header'
 import '@/styles/components/list.css'
-import {
-  Delete,
-  DeleteIcon,
-  Edit,
-  PlusCircleIcon,
-  SearchIcon,
-} from 'lucide-react'
-import Link from 'next/link'
+import React, { useEffect, useState } from 'react'
+import { isAdmin } from '@/lib/isAdmin'
+import Header from '@/app/(components)/Header'
 import PostCard from '../(components)/PostCard'
+import { PlusCircleIcon, SearchIcon } from 'lucide-react'
 
 const PostList = () => {
   const [posts, setPosts] = useState<any[]>([])
+  const admin = isAdmin()
 
   const stripHtmlTags = (html: string) => {
     return html.replace(/<[^>]+>/g, '')
@@ -38,7 +33,6 @@ const PostList = () => {
         return acc
       }, [])
       setPosts(postsData)
-      // console.log('Posts fetched successfully:', postsData)
     })
   }
   const handleSubmit = async () => {}
@@ -55,15 +49,10 @@ const PostList = () => {
         </div>
       </div>
       {/* HEADER BAR   */}
-      <div className='header-bar'>
-        <Header name='Posts' />
-        <Link
-          href='/admin/create-post'
-          className='create-btn'
-          // onClick={() => setIsModelOpen(true)}
-        >
-          <PlusCircleIcon className='plus-icon' /> Create Post
-        </Link>
+
+      <div className='header-wrapper'>
+        <Header name='Blog Posts' />
+        <p className='blog-count'>{posts.length} posts</p>
       </div>
       {/* BODY OF LIST of POSTS */}
       <div className='grid-layout'>
