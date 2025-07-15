@@ -1,0 +1,27 @@
+.post-wrapper {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2rem;
+  padding-bottom: 1.5rem;
+}
+
+.post-header {
+  margin-bottom: 1.5rem;
+}
+
+.post-slug {
+  font-size: 1.2rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+.post-slug-header {
+  font-weight: bold;
+  color: #6b7280;
+}
+
+.post-desc {
+  font-size: 14;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}

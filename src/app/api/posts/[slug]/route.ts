@@ -6,6 +6,8 @@ import { generateSlug } from '@/lib/generateSlug'
 export async function GET(req: Request, context: { params: { slug: string } }) {
   try {
     await connectDB()
+    console.log('get one')
+
     const { slug } = await context.params
 
     const post = await Post.findOne({ slug })
@@ -30,6 +32,7 @@ export async function PUT(req: Request, context: { params: { slug: string } }) {
     const { slug } = await context.params
 
     await connectDB()
+    console.log('update', slug)
 
     const updatedPost = await Post.findOneAndUpdate(
       { slug },
@@ -59,6 +62,7 @@ export async function DELETE(
     const { slug } = await context.params
 
     await connectDB()
+
     const deletedPost = await Post.findOneAndDelete({ slug })
 
     if (!deletedPost)

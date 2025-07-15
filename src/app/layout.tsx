@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+
 import '@/styles/globals.css'
+import { AppProvider } from './context'
 import DashboardWrapper from './dashboardWrapper'
 
 const geistSans = Geist({
@@ -26,7 +28,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <DashboardWrapper>{children}</DashboardWrapper>
+        <AppProvider>
+          <DashboardWrapper>{children}</DashboardWrapper>
+        </AppProvider>
       </body>
     </html>
   )

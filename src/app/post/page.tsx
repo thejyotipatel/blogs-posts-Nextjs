@@ -3,44 +3,20 @@ import React, { useEffect, useState } from 'react'
 import Header from '@/app/(components)/Header'
 import '@/styles/components/list.css'
 import { SearchIcon } from 'lucide-react'
-import Link from 'next/link'
-import PostCard from '../(components)/PostCard'
+import PostCard from '@/app/(components)/PostCard'
+import { useAppContext } from '@/app/context'
 
 const Post = () => {
-  const [posts, setPosts] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { isLoading, posts, getPosts } = useAppContext()
 
-  const stripHtmlTags = (html: string) => {
-    return html.replace(/<[^>]+>/g, '')
+  const [query, setQuery] = useState('')
+
+  const handleSearch = (value: string) => {
+    setQuery(value)
   }
-
-  const getData = async () => {
-    setIsLoading(true)
-    fetch('/api/posts').then(async (res) => {
-      if (!res.ok) throw new Error('Failed to fetch posts')
-
-      const data = await res.json()
-
-      if (!data || data.length === 0)
-        return <h1 className='custom-heading'>No posts found</h1>
-
-      const postsData = data.reduce((acc: any[], post: any) => {
-        acc.push({
-          ...post,
-          content: stripHtmlTags(post.content),
-        })
-        return acc
-      }, [])
-      setPosts(postsData)
-      setIsLoading(false)
-    })
-  }
-
   useEffect(() => {
-    getData()
-  }, [])
-
-  if (isLoading) return <h1>Blog posts are Loading...</h1>
+    getPosts(query)
+  }, [query])
 
   return (
     <div className='products-container'>
@@ -48,18 +24,26 @@ const Post = () => {
       <div className='search-wrapper'>
         <div className='search-bar'>
           <SearchIcon className='search-icon' />
-          <input className='search-input' placeholder='Search blog post...' />
+          <input
+            value={query}
+            onChange={(e) => handleSearch(e.target.value)}
+            className='search-input'
+            placeholder='Search products...'
+          />
         </div>
       </div>
+      {/* HEADER BAR   */}
+
       <div className='header-wrapper'>
-        <Header name='All the Blog Posts' />
-        <p className='blog-count'>{posts.length} posts</p>
+        <Header name='Blog Posts' />
+        <p className='blog-count'>{posts!.length} posts</p>
       </div>
       {/* BODY OF LIST of POSTS */}
+      {isLoading && <p>Loading...</p>}
       <div className='grid-layout'>
-        {posts.map((post) => (
-          <PostCard key={post._id} post={post} />
-        ))}
+        {posts!.length > 0
+          ? posts!.map((post) => <PostCard key={post._id} post={post} />)
+          : !isLoading && <p>No posts found.</p>}
       </div>
     </div>
   )

@@ -6,8 +6,16 @@ export async function POST(req: Request) {
   try {
     const { title, content } = await req.json()
     await connectDB()
+
+    if (!title && !content) {
+      return new Response(
+        JSON.stringify({ error: 'Please enter Title and Content.' }),
+        { status: 400 }
+      )
+    }
     const slug = generateSlug(title)
     const postExist = await Post.findOne({ slug })
+
     if (postExist) {
       return new Response(
         JSON.stringify({ error: 'Post with this title already exists.' }),

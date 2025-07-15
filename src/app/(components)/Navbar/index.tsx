@@ -1,25 +1,12 @@
 'use client'
 
-import React from 'react'
 import { PlusCircleIcon, User } from 'lucide-react'
 import '@/styles/components/navbar.css'
 import Link from 'next/link'
-import { isAdmin } from '@/lib/isAdmin'
-import { useRouter } from 'next/navigation'
+import { useAppContext } from '@/app/context'
 
 const Navbar = () => {
-  const admin = isAdmin()
-  const router = useRouter()
-
-  const handleAdminClick = () => {
-    if (!admin) {
-      router.push('/admin')
-      localStorage.setItem('isAdmin', 'true')
-    } else {
-      router.push('/post')
-      localStorage.removeItem('isAdmin')
-    }
-  }
+  const { isAdmin, handleAdmin } = useAppContext()
 
   return (
     <div className={'topbar'}>
@@ -29,20 +16,18 @@ const Navbar = () => {
 
       {/* RIGHT SIDE */}
       <div className='topbar-right'>
-        {admin && (
-          <>
-            <Link href='/admin' className='post-btn'>
-              Posts List
-            </Link>
-            <Link href='/admin/create-post' className='create-btn'>
-              <PlusCircleIcon className='plus-icon' /> Create Post
-            </Link>
-          </>
+        <Link href='/' className='post-btn'>
+          Posts List
+        </Link>
+        {isAdmin && (
+          <Link href='admin/create-post' className='create-btn'>
+            <PlusCircleIcon className='plus-icon' /> Create Post
+          </Link>
         )}
-        <button className='admin-info' onClick={handleAdminClick}>
+        <button className='admin-info' onClick={() => handleAdmin()}>
           <User className='icon-style admin-avatar' size={24} />
           <span className='admin-name'>
-            {admin ? 'Logout as admin' : 'Login as admin'}
+            {isAdmin ? 'Logout as admin' : 'Login as admin'}
           </span>
         </button>
       </div>

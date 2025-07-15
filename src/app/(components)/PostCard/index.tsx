@@ -2,43 +2,49 @@
 
 import { DeleteIcon, Edit } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState } from 'react'
-import { isAdmin } from '@/lib/isAdmin'
+import { useAppContext } from '@/app/context'
 
-type PostCardProps = {
-  post: {
-    _id: string
-    title: string
-    slug: string
-    content: string
-  }
+type Post = {
+  _id: string
+  title: string
+  slug: string
+  content: string
 }
-const PostCard = ({ post }: PostCardProps) => {
-  const admin = isAdmin()
+const PostCard = ({ post }: { post: Post }) => {
+  const { isAdmin, deletePost, stripHtmlTags } = useAppContext()
 
   return (
     <div className='grid-item ' key={post._id}>
       <div className='item-header'>
         <h1 className='item-title'>{post.title}</h1>
 
-        {admin && (
+        {isAdmin && (
           <div className='btns-wrapper'>
-            <button className='edit-btn'>
+            <Link href={`/admin/${post.slug}`} className='edit-btn'>
               <Edit />
-            </button>
-            <button className='delete-btn'>
+            </Link>
+            <button
+              onClick={() => deletePost(post.slug)}
+              className='delete-btn'
+            >
               <DeleteIcon />
             </button>
           </div>
         )}
       </div>
       <div className='post-link'>
-        <Link href={`/admin/${post.slug}`} className='item-desc'>
-          <p className='item-date'>{post.slug}</p>
+        <Link
+          href={`/${isAdmin ? 'admin' : 'post'}/${post.slug}`}
+          className='item-desc'
+        >
+          <p className='item-slug'>
+            <span className='slug'>Slug: </span>
+            {post.slug}
+          </p>
           <br />
           {post.content.length > 100
-            ? post.content.substring(0, 100) + '...'
-            : post.content}
+            ? stripHtmlTags(post.content.substring(0, 100)) + '...'
+            : stripHtmlTags(post.content)}
           <br />
         </Link>
       </div>
