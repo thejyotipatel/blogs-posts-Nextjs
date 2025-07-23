@@ -15,14 +15,14 @@ export default function EditPage() {
     if (typeof slug === 'string') {
       getOnePost(slug)
     }
-  }, [getOnePost, slug])
+  }, [])
 
   useEffect(() => {
     if (post) {
       setTitle(post.title)
       setContent(post.content)
     }
-  }, [post])
+  }, [])
   return (
     <div className='create-post-container'>
       <div className='create-post-wrapper'>
