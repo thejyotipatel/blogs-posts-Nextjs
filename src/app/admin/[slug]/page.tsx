@@ -11,12 +11,18 @@ export default function EditPage() {
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  useEffect(() => {
+    if (typeof slug === 'string') {
+      getOnePost(slug)
+    }
+  }, [getOnePost, slug])
 
   useEffect(() => {
-    getOnePost(slug)
-    setTitle(post?.title)
-    setContent(post?.content)
-  }, [])
+    if (post) {
+      setTitle(post.title)
+      setContent(post.content)
+    }
+  }, [post])
   return (
     <div className='create-post-container'>
       <div className='create-post-wrapper'>
@@ -34,8 +40,13 @@ export default function EditPage() {
         <QuillEditor content={content} setContent={setContent} />
 
         <button
-          onClick={() => editPost(slug, title, content)}
+          onClick={() => {
+            if (typeof slug === 'string') {
+              editPost(slug, title, content)
+            }
+          }}
           className='save-button'
+          disabled={typeof slug !== 'string'}
         >
           Update Blog Post
         </button>

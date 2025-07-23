@@ -1,38 +1,42 @@
 import connectDB from '@/lib/dbConnect'
 import Post from '@/models/Post'
 import { generateSlug } from '@/lib/generateSlug'
+import { NextRequest, NextResponse } from 'next/server'
 
 // GET BLOG POST BY TITLE/SLUG
-export async function GET(context: { params: { slug: string } }) {
+// { params }: { params: Promise<{ slug: string[] }> },
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string[] }> }
+) {
   try {
     await connectDB()
-    console.log('get one')
+    // const slug = (await params).slug
 
-    const { slug } = await context.params
+    const slug = (await params).slug
 
     const post = await Post.findOne({ slug })
 
     if (!post)
-      return new Response(JSON.stringify({ err: 'Blog post not found' }), {
-        status: 404,
-      })
+      return NextResponse.json({ err: 'Blog post not found' }, { status: 404 })
 
-    return new Response(JSON.stringify(post), { status: 200 })
+    return NextResponse.json(post, { status: 200 })
   } catch {
-    return new Response(JSON.stringify({ err: 'Failed to fetch post' }), {
-      status: 500,
-    })
+    return NextResponse.json({ err: 'Failed to fetch post' }, { status: 500 })
   }
 }
 
 // UPDATE BLOG POST
-export async function PUT(req: Request, context: { params: { slug: string } }) {
+export async function PUT(
+  req: Request,
+  { params }: { params: Promise<{ slug: string[] }> }
+) {
   try {
     const { title, content } = await req.json()
-    const { slug } = await context.params
+    const slug = (await params).slug
 
     await connectDB()
-    console.log('update', slug)
 
     const updatedPost = await Post.findOneAndUpdate(
       { slug },
@@ -41,13 +45,13 @@ export async function PUT(req: Request, context: { params: { slug: string } }) {
     )
 
     if (!updatedPost)
-      return new Response(JSON.stringify({ err: 'Blog post not found' }), {
+      return new NextResponse(JSON.stringify({ err: 'Blog post not found' }), {
         status: 404,
       })
 
-    return new Response(JSON.stringify(updatedPost), { status: 200 })
+    return new NextResponse(JSON.stringify(updatedPost), { status: 200 })
   } catch {
-    return new Response(JSON.stringify({ err: 'Failed to update post' }), {
+    return new NextResponse(JSON.stringify({ err: 'Failed to update post' }), {
       status: 500,
     })
   }
@@ -56,26 +60,28 @@ export async function PUT(req: Request, context: { params: { slug: string } }) {
 // DELETE BLOG POST BY SLUG
 export async function DELETE(
   req: Request,
-  context: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string[] }> }
 ) {
   try {
-    const { slug } = await context.params
-
+    const slug = (await params).slug
     await connectDB()
 
     const deletedPost = await Post.findOneAndDelete({ slug })
 
     if (!deletedPost)
-      return new Response(JSON.stringify({ err: 'Blog post not found' }), {
+      return new NextResponse(JSON.stringify({ err: 'Blog post not found' }), {
         status: 404,
       })
 
-    return new Response(JSON.stringify({ message: 'Blog post deleted' }), {
+    return new NextResponse(JSON.stringify({ message: 'Blog post deleted' }), {
       status: 200,
     })
   } catch {
-    return new Response(JSON.stringify({ err: 'Failed to delete blog post' }), {
-      status: 500,
-    })
+    return new NextResponse(
+      JSON.stringify({ err: 'Failed to delete blog post' }),
+      {
+        status: 500,
+      }
+    )
   }
 }
