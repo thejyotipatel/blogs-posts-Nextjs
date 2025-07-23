@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
     if (!title && !content) {
       return new Response(
-        JSON.stringify({ error: 'Please enter Title and Content.' }),
+        JSON.stringify({ err: 'Please enter Title and Content.' }),
         { status: 400 }
       )
     }
@@ -18,16 +18,16 @@ export async function POST(req: Request) {
 
     if (postExist) {
       return new Response(
-        JSON.stringify({ error: 'Post with this title already exists.' }),
+        JSON.stringify({ err: 'Post with this title already exists.' }),
         { status: 400 }
       )
     }
 
     const post = await Post.create({ title, content, slug })
     return new Response(JSON.stringify(post), { status: 201 })
-  } catch (error) {
+  } catch (err) {
     return new Response(
-      JSON.stringify({ error: 'Failed to create blog post.' }),
+      JSON.stringify({ err: 'Failed to create blog post.' }),
       {
         status: 500,
       }

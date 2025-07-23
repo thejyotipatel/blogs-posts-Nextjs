@@ -3,7 +3,7 @@ import Post from '@/models/Post'
 import { generateSlug } from '@/lib/generateSlug'
 
 // GET BLOG POST BY TITLE/SLUG
-export async function GET(req: Request, context: { params: { slug: string } }) {
+export async function GET(context: { params: { slug: string } }) {
   try {
     await connectDB()
     console.log('get one')
@@ -13,13 +13,13 @@ export async function GET(req: Request, context: { params: { slug: string } }) {
     const post = await Post.findOne({ slug })
 
     if (!post)
-      return new Response(JSON.stringify({ error: 'Blog post not found' }), {
+      return new Response(JSON.stringify({ err: 'Blog post not found' }), {
         status: 404,
       })
 
     return new Response(JSON.stringify(post), { status: 200 })
   } catch {
-    return new Response(JSON.stringify({ error: 'Failed to fetch post' }), {
+    return new Response(JSON.stringify({ err: 'Failed to fetch post' }), {
       status: 500,
     })
   }
@@ -41,13 +41,13 @@ export async function PUT(req: Request, context: { params: { slug: string } }) {
     )
 
     if (!updatedPost)
-      return new Response(JSON.stringify({ error: 'Blog post not found' }), {
+      return new Response(JSON.stringify({ err: 'Blog post not found' }), {
         status: 404,
       })
 
     return new Response(JSON.stringify(updatedPost), { status: 200 })
   } catch {
-    return new Response(JSON.stringify({ error: 'Failed to update post' }), {
+    return new Response(JSON.stringify({ err: 'Failed to update post' }), {
       status: 500,
     })
   }
@@ -66,7 +66,7 @@ export async function DELETE(
     const deletedPost = await Post.findOneAndDelete({ slug })
 
     if (!deletedPost)
-      return new Response(JSON.stringify({ error: 'Blog post not found' }), {
+      return new Response(JSON.stringify({ err: 'Blog post not found' }), {
         status: 404,
       })
 
@@ -74,11 +74,8 @@ export async function DELETE(
       status: 200,
     })
   } catch {
-    return new Response(
-      JSON.stringify({ error: 'Failed to delete blog post' }),
-      {
-        status: 500,
-      }
-    )
+    return new Response(JSON.stringify({ err: 'Failed to delete blog post' }), {
+      status: 500,
+    })
   }
 }

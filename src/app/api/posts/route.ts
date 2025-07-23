@@ -21,7 +21,7 @@ export async function GET(req: Request) {
   } catch (err) {
     console.error('Error getting posts:', err)
     return NextResponse.json(
-      { error: 'Failed to get blog posts' },
+      { err: 'Failed to get blog posts' },
       { status: 500 }
     )
   }
