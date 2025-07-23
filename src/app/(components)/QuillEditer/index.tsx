@@ -20,7 +20,7 @@ export default function QuillEditor({ content, setContent }: Props) {
         setContent(quill.root.innerHTML)
       })
     }
-  }, [quill, content, setContent])
+  }, [quill])
 
   return (
     <div style={{ width: '100%', minHeight: '100%' }}>

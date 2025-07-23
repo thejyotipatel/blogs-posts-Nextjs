@@ -14,7 +14,7 @@ const SingleBlogPost = () => {
     if (typeof slug === 'string') {
       getOnePost(slug)
     }
-  }, [getOnePost, slug])
+  }, [])
 
   if (isLoading || !post) return <p>Loading...</p>
 
