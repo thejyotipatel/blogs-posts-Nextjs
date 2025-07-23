@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     const post = await Post.create({ title, content, slug })
     return new Response(JSON.stringify(post), { status: 201 })
-  } catch (err) {
+  } catch (error) {
     return new Response(
       JSON.stringify({ error: 'Failed to create blog post.' }),
       {

@@ -5,35 +5,14 @@ import '@/styles/components/CreatePostPage.css'
 import { useAppContext } from '@/app/context'
 import { useParams } from 'next/navigation'
 
-// type Props = {
-//   params: { slug: string }
-//   post: {
-//     _id: string
-//     title: string
-//     slug: string
-//     content: string
-//   }
-// }
-
-// type PostProps = {
-//   _id: string
-//   title: string
-//   slug: string
-//   content: string
-// }
-// type paramsType = { params: { slug: string } }
-
 export default function EditPage() {
-  const { editPost, getOnePost, isLoading, post } = useAppContext()
+  const { editPost, getOnePost, post } = useAppContext()
   const { slug } = useParams()
 
-  // const [post, setPost] = useState<any[] | null>(null)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
   useEffect(() => {
-    console.log(slug)
-
     getOnePost(slug)
     setTitle(post?.title)
     setContent(post?.content)
