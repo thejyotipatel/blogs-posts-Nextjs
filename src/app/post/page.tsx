@@ -16,7 +16,7 @@ const Post = () => {
   }
   useEffect(() => {
     getPosts(query)
-  }, [])
+  }, [query])
 
   return (
     <div className='products-container'>
